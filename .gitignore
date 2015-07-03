@@ -1,0 +1,5 @@
+bin/
+*.xe
+.build_Release/
+.build_Debug/
+.settings/
