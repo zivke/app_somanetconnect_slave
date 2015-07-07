@@ -3,10 +3,12 @@
 #define USE_XSCOPE
 
 #include "somanet_connect_server.h"
+#include "counter_task.h"
 
 int main(void) {
     chan c_host_data;
-    interface somanet_connect_interface sci;
+    interface somanet_connect_interface sci[3];
+    interface task_control_interface tci[3];
 
     par
     {
@@ -17,8 +19,17 @@ int main(void) {
             [[combine]]
             par
             {
-                somanet_connect_server(c_host_data, sci);
-                app_plugin(sci);
+                somanet_connect_server(c_host_data, sci, 3);
+                counter_plugin(sci[1], tci[1]);
+                counter_plugin(sci[2], tci[2]);
+            }
+        }
+
+        on tile[IFM_TILE]:
+        {
+            par {
+                counter_task(tci[1], 1);
+                counter_task(tci[2], 2);
             }
         }
     }
