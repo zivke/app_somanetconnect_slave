@@ -1,13 +1,14 @@
 #include <CORE_C22-rev-a.inc>
 
 #define USE_XSCOPE
+#define NO_OF_PLUGINS 2
 
 #include "somanet_connect_server.h"
 #include "counter_service.h"
 
 int main(void) {
     chan c_host_data;
-    interface plugin_interface pi[2];
+    interface plugin_interface pi[NO_OF_PLUGINS];
     interface counter_service_interface csi[2];
 
     par
