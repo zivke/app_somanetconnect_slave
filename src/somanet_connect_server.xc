@@ -1,10 +1,25 @@
 #include "somanet_connect_server.h"
 #include "plugin_interface.h"
+#include "configuration.h"
 #include <print.h>
 #include <xscope.h>
 
+struct Plugin {
+    unsigned char type;
+    int instance;
+};
+
 [[combinable]]
 void somanet_connect_server(chanend c_host_data, client interface plugin_interface pi[n], unsigned n) {
+
+    struct Plugin plugins[NO_OF_PLUGINS];
+
+    for (int i = 0; i < NO_OF_PLUGINS; i++) {
+        struct Plugin tmp;
+        tmp.type = pi[i].get_type();
+        tmp.instance = pi[i].get_instance();
+        plugins[i] = tmp;
+    }
 
     // The maximum read size is 256 bytes
     unsigned int buffer[256 / 4];
@@ -28,8 +43,8 @@ void somanet_connect_server(chanend c_host_data, client interface plugin_interfa
                     unsigned int instance = *(++ptr);
 
                     for (int i = 0; i < n; i++) {
-                        if (pi[i].get_type() == type) {
-                            if (pi[i].get_instance() == instance) {
+                        if (plugins[i].type == type) {
+                            if (plugins[i].instance == instance) {
                                 pi[i].get_command(++ptr);
                             }
                         }
