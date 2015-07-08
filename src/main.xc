@@ -3,7 +3,7 @@
 #define USE_XSCOPE
 
 #include "somanet_connect_server.h"
-#include "counter_task.h"
+#include "counter_service.h"
 
 int main(void) {
     chan c_host_data;
@@ -28,8 +28,8 @@ int main(void) {
         on tile[IFM_TILE]:
         {
             par {
-                counter_task(tci[1], 1);
-                counter_task(tci[2], 2);
+                counter_service(tci[1], 1);
+                counter_service(tci[2], 2);
             }
         }
     }

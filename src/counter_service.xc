@@ -1,11 +1,11 @@
-#include "counter_task.h"
+#include "counter_service.h"
 #include <timer.h>
 #include <print.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <xs1.h>
 
-void counter_task(server interface task_control_interface tci, int number) {
+void counter_service(server interface task_control_interface tci, int number) {
     timer t;
     uint32_t time, start_time;
     const uint32_t period = 1000 * 100000; // 100000 timer ticks = 1ms

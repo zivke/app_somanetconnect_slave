@@ -1,5 +1,5 @@
 #pragma once
-#include "counter_task.h"
+#include "counter_service.h"
 
 interface somanet_connect_interface {
     void get_command(const unsigned char * unsafe p);
