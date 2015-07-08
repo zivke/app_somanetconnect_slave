@@ -4,8 +4,20 @@
 
 [[combinable]]
 void counter_plugin(server interface plugin_interface pi, client interface counter_service_interface csi) {
+    unsigned char type = 'c';
+
     while(1) {
         select {
+            case pi.get_type() -> unsigned char t: {
+                t = type;
+                break;
+            }
+
+            case pi.get_instance() -> int instance: {
+                instance = csi.get_instance();
+                break;
+            }
+
             case pi.get_command(const unsigned char * unsafe p): {
                 char ch;
                 unsafe {

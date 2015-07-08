@@ -24,9 +24,16 @@ void somanet_connect_server(chanend c_host_data, client interface plugin_interfa
 
                 unsafe {
                     const unsigned char * unsafe ptr = &char_ptr[0];
-                    unsigned int i = *ptr;
-                    ptr++;
-                    pi[i].get_command(ptr);
+                    unsigned char type = *ptr;
+                    unsigned int instance = *(++ptr);
+
+                    for (int i = 0; i < n; i++) {
+                        if (pi[i].get_type() == type) {
+                            if (pi[i].get_instance() == instance) {
+                                pi[i].get_command(++ptr);
+                            }
+                        }
+                    }
                 }
                 break;
             }

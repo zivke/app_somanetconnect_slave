@@ -16,6 +16,11 @@ void counter_service(server interface counter_service_interface csi, int number)
     t :> start_time;
     while(1) {
         select {
+            case csi.get_instance() -> int instance: {
+                instance = number;
+                break;
+            }
+
             case csi.start(): {
                 run = 1;
                 printf("Task number %d started successfully\n", number);
