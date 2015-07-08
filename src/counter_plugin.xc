@@ -3,21 +3,21 @@
 #include <print.h>
 
 [[combinable]]
-void counter_plugin(server interface somanet_connect_interface sci, client interface task_control_interface tci) {
+void counter_plugin(server interface plugin_interface pi, client interface counter_service_interface csi) {
     while(1) {
         select {
-            case sci.get_command(const unsigned char * unsafe p): {
+            case pi.get_command(const unsigned char * unsafe p): {
                 char ch;
                 unsafe {
                     ch = *p;
                 }
                 switch (ch) {
                     case 's': {
-                        tci.start();
+                        csi.start();
                         break;
                     }
                     case 'p': {
-                        tci.stop();
+                        csi.stop();
                         break;
                     }
                     default: {

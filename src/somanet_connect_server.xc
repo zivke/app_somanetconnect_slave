@@ -4,7 +4,7 @@
 #include <xscope.h>
 
 [[combinable]]
-void somanet_connect_server(chanend c_host_data, client interface somanet_connect_interface sci[n], unsigned n) {
+void somanet_connect_server(chanend c_host_data, client interface plugin_interface pi[n], unsigned n) {
 
     // The maximum read size is 256 bytes
     unsigned int buffer[256 / 4];
@@ -26,7 +26,7 @@ void somanet_connect_server(chanend c_host_data, client interface somanet_connec
                     const unsigned char * unsafe ptr = &char_ptr[0];
                     unsigned int i = *ptr;
                     ptr++;
-                    sci[i].get_command(ptr);
+                    pi[i].get_command(ptr);
                 }
                 break;
             }

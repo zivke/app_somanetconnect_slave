@@ -7,8 +7,8 @@
 
 int main(void) {
     chan c_host_data;
-    interface somanet_connect_interface sci[2];
-    interface task_control_interface tci[2];
+    interface plugin_interface pi[2];
+    interface counter_service_interface csi[2];
 
     par
     {
@@ -19,17 +19,17 @@ int main(void) {
             [[combine]]
             par
             {
-                somanet_connect_server(c_host_data, sci, 2);
-                counter_plugin(sci[0], tci[0]);
-                counter_plugin(sci[1], tci[1]);
+                somanet_connect_server(c_host_data, pi, 2);
+                counter_plugin(pi[0], csi[0]);
+                counter_plugin(pi[1], csi[1]);
             }
         }
 
         on tile[IFM_TILE]:
         {
             par {
-                counter_service(tci[0], 0);
-                counter_service(tci[1], 1);
+                counter_service(csi[0], 0);
+                counter_service(csi[1], 1);
             }
         }
     }

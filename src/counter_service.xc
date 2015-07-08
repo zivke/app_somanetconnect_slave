@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <xs1.h>
 
-void counter_service(server interface task_control_interface tci, int number) {
+void counter_service(server interface counter_service_interface csi, int number) {
     timer t;
     uint32_t time, start_time;
     const uint32_t period = 1000 * 100000; // 100000 timer ticks = 1ms
@@ -16,13 +16,13 @@ void counter_service(server interface task_control_interface tci, int number) {
     t :> start_time;
     while(1) {
         select {
-            case tci.start(): {
+            case csi.start(): {
                 run = 1;
                 printf("Task number %d started successfully\n", number);
                 break;
             }
 
-            case tci.stop(): {
+            case csi.stop(): {
                 run = 0;
                 printf("Task number %d stoped successfully\n", number);
                 break;

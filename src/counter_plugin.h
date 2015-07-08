@@ -3,4 +3,4 @@
 #include "counter_service.h"
 
 [[combinable]]
-void counter_plugin(server interface somanet_connect_interface sci, client interface task_control_interface tci);
+void counter_plugin(server interface plugin_interface pi, client interface counter_service_interface csi);
