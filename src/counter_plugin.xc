@@ -1,3 +1,4 @@
+#include "plugin_interface.h"
 #include "counter_plugin.h"
 #include <print.h>
 

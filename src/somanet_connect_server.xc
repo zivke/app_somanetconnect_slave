@@ -1,4 +1,5 @@
 #include "somanet_connect_server.h"
+#include "plugin_interface.h"
 #include <print.h>
 #include <xscope.h>
 
