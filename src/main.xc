@@ -21,9 +21,13 @@ int main(void) {
             par
             {
                 counter_plugin(pi[0], csi[0]);
-                counter_plugin(pi[1], csi[1]);
                 somanet_connect_server(c_host_data, pi, 2);
             }
+        }
+
+        on tile[1]:
+        {
+            counter_plugin(pi[1], csi[1]);
         }
 
         on tile[IFM_TILE]:

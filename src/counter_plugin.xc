@@ -18,12 +18,8 @@ void counter_plugin(server interface plugin_interface pi, client interface count
                 break;
             }
 
-            case pi.get_command(const unsigned char * unsafe p): {
-                char ch;
-                unsafe {
-                    ch = *p;
-                }
-                switch (ch) {
+            case pi.get_command(unsigned char command[n], unsigned n): {
+                switch (command[0]) {
                     case 's': {
                         csi.start();
                         break;
