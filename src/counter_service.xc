@@ -8,7 +8,7 @@
 void counter_service(server interface counter_service_interface csi, int number) {
     timer t;
     uint32_t time, start_time;
-    const uint32_t period = 1000 * 100000; // 100000 timer ticks = 1ms
+    const uint32_t period = 1000 * 250000; // 250000 timer ticks = 1ms (ReferenceFrequency="250MHz")
 
     int run = 0;
 
