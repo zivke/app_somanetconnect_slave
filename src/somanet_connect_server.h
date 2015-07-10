@@ -1,4 +1,5 @@
 #pragma once
+
 #include "counter_plugin.h"
 
 [[combinable]]
