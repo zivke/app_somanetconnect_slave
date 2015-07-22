@@ -4,8 +4,14 @@
 #define NO_OF_PLUGINS 1
 #define NO_OF_SERVICES 2
 
+#include <xscope.h>
 #include "somanet_connect_server.h"
 #include "counter_service.h"
+
+void xscope_user_init(void) {
+   xscope_register(0);
+   xscope_config_io(XSCOPE_IO_BASIC);
+}
 
 int main(void) {
     chan c_host_data;
