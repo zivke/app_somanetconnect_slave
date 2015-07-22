@@ -3,7 +3,7 @@
 #include <print.h>
 
 [[combinable]]
-void counter_plugin(server interface plugin_interface pi, client interface counter_service_interface csi) {
+void counter_plugin(server interface plugin_interface pi, client interface counter_service_interface csi[n], unsigned n) {
     unsigned char type = 'c';
 
     while(1) {
@@ -13,19 +13,15 @@ void counter_plugin(server interface plugin_interface pi, client interface count
                 break;
             }
 
-            case pi.get_instance() -> int instance: {
-                instance = csi.get_instance();
-                break;
-            }
-
             case pi.get_command(unsigned char command[n], unsigned n): {
-                switch (command[0]) {
+                unsigned int i = command[0];
+                switch (command[1]) {
                     case 's': {
-                        csi.start();
+                        csi[i].start();
                         break;
                     }
                     case 'p': {
-                        csi.stop();
+                        csi[i].stop();
                         break;
                     }
                     default: {
