@@ -1,6 +1,5 @@
 #include <CORE_C22-rev-a.inc>
 
-#define USE_XSCOPE
 #define NO_OF_PLUGINS 1
 #define NO_OF_SERVICES 2
 
