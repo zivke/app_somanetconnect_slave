@@ -12,6 +12,9 @@ void counter_service(server interface counter_service_interface csi) {
 
     int run = 0;
 
+    csi_event_type_t event_type;
+    int probe_int_value;
+
     t :> time;
     t :> start_time;
     while(1) {
@@ -28,11 +31,27 @@ void counter_service(server interface counter_service_interface csi) {
                 break;
             }
 
+            case csi.get_event() -> csi_event_type_t t: {
+                t = event_type;
+                break;
+            }
+
+            case csi.get_int_probe_value() -> int x: {
+                x = probe_int_value;
+                break;
+            }
+
             case t when timerafter(time) :> void: {
                 if (run) {
-                    printf("Counter service: %d\n", (time - start_time)/period);
+                    int current_time = (time - start_time)/period;
+
+                    // Event
+                    event_type = E_PROBE_INT_VALUE;
+                    probe_int_value = current_time;
+                    csi.event();
                 }
                 time += period;
+
                 break;
             }
         }

@@ -1,6 +1,7 @@
 #include "plugin_interface.h"
 #include "counter_plugin.h"
 #include <print.h>
+#include <xscope.h>
 
 [[combinable]]
 void counter_plugin(server interface plugin_interface pi, client interface counter_service_interface csi[n], unsigned n) {
@@ -26,6 +27,20 @@ void counter_plugin(server interface plugin_interface pi, client interface count
                     }
                     default: {
                         printstrln("Unknown command!");
+                        break;
+                    }
+                }
+                break;
+            }
+
+            case csi[int i].event(): {
+                switch(csi[i].get_event()) {
+                    case E_PROBE_INT_VALUE: {
+                        xscope_int(0, csi[i].get_int_probe_value());
+                        break;
+                    }
+                    default: {
+                        printstrln("Unknown event!");
                         break;
                     }
                 }

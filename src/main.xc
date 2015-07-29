@@ -12,6 +12,10 @@ void xscope_user_init(void) {
    xscope_config_io(XSCOPE_IO_BASIC);
 }
 
+void xscope_initialise() {
+    xscope_register(1, XSCOPE_CONTINUOUS, "counter", XSCOPE_INT, "n/a");
+}
+
 int main(void) {
     chan c_host_data;
     interface plugin_interface pi[NO_OF_PLUGINS];
@@ -23,7 +27,9 @@ int main(void) {
 
         on tile[COM_TILE]:
         {
-            [[combine]]
+            xscope_initialise();
+
+//            [[combine]]
             par
             {
                 somanet_connect_server(c_host_data, pi, NO_OF_PLUGINS);
