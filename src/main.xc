@@ -25,7 +25,7 @@ int main(void) {
 //            [[combine]]
             par
             {
-                somanet_connect_server(c_host_data, pi, NO_OF_PLUGINS);
+                somanet_connect_server(c_host_data, pi);
                 counter_plugin(pi[0], csi);
             }
         }

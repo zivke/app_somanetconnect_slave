@@ -5,7 +5,7 @@
 #include <string.h>
 
 [[combinable]]
-void somanet_connect_server(chanend c_host_data, client interface plugin_interface pi[n], unsigned n) {
+void somanet_connect_server(chanend c_host_data, client interface plugin_interface pi[NO_OF_PLUGINS]) {
 
     // The maximum read size is 256 bytes
     unsigned int buffer[256 / 4];
@@ -27,7 +27,7 @@ void somanet_connect_server(chanend c_host_data, client interface plugin_interfa
                     const unsigned char * unsafe ptr = &char_ptr[0];
                     unsigned char type = *ptr;
 
-                    for (int i = 0; i < n; i++) {
+                    for (int i = 0; i < NO_OF_PLUGINS; i++) {
                         if (pi[i].get_type() == type) {
                             unsigned char command[256];
                             memcpy(command, ++ptr, (bytes_read - 1)*sizeof(unsigned char));
