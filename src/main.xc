@@ -1,11 +1,9 @@
 #include <CORE_C22-rev-a.inc>
 
-#define NO_OF_PLUGINS 1
-#define NO_OF_SERVICES 2
-
 #include <xscope.h>
 #include "somanet_connect_server.h"
 #include "counter_service.h"
+#include <system_config.h>
 
 void xscope_user_init(void) {
    xscope_register(0);
@@ -19,7 +17,7 @@ void xscope_initialise() {
 int main(void) {
     chan c_host_data;
     interface plugin_interface pi[NO_OF_PLUGINS];
-    interface counter_service_interface csi[NO_OF_SERVICES];
+    interface counter_service_interface csi[NO_OF_COUNTER_SERVICES];
 
     par
     {
@@ -33,7 +31,7 @@ int main(void) {
             par
             {
                 somanet_connect_server(c_host_data, pi, NO_OF_PLUGINS);
-                counter_plugin(pi[0], csi, NO_OF_SERVICES);
+                counter_plugin(pi[0], csi);
             }
         }
 
