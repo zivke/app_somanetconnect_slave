@@ -7,11 +7,8 @@
 
 void xscope_user_init(void) {
    xscope_register(0);
+   xscope_register(1, XSCOPE_CONTINUOUS, "counter", XSCOPE_INT, "n/a");
    xscope_config_io(XSCOPE_IO_BASIC);
-}
-
-void xscope_initialise() {
-    xscope_register(1, XSCOPE_CONTINUOUS, "counter", XSCOPE_INT, "n/a");
 }
 
 int main(void) {
@@ -25,8 +22,6 @@ int main(void) {
 
         on tile[COM_TILE]:
         {
-            xscope_initialise();
-
 //            [[combine]]
             par
             {
