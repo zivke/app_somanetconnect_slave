@@ -6,32 +6,30 @@
 #include <xs1.h>
 
 [[combinable]]
-void somanet_connect_server(chanend c_host_data, client interface plugin_interface pi[NO_OF_PLUGINS]) {
-    const uint32_t period = 1000 * 250000;
+void somanet_connect_server(client interface plugin_interface pi[NO_OF_PLUGINS]) {
+    timer t;
+    uint32_t time;
 
-    timer t1, t2;
-    uint32_t time1, time2;
-
-    t1 :> time1;
-    t2 :> time2;
+    t :> time;
     while (1) {
         select {
-            case t1 when timerafter(time1 + 5 * period) :> void: {
+            case t when timerafter(time) :> void: {
                 for (int i = 0; i < NO_OF_PLUGINS; i++) {
-                    if (pi[i].get_type() == 'c') {
-                        unsigned char command[256] = {'s'};
-                        pi[i].get_command(command, 1);
+                    if (pi[i].get_type() == COUNTER_PLUGIN_TYPE) {
+                        unsigned char command[256] = {'\x00', COUNTER_PLUGIN_START};
+                        pi[i].get_command(command, 2);
                     }
                 }
-                break;
-            }
-            case t2 when timerafter(time2 + 10 * period) :> void: {
+
+                delay_milliseconds(5000);
+
                 for (int i = 0; i < NO_OF_PLUGINS; i++) {
-                    if (pi[i].get_type() == 'c') {
-                        unsigned char command[256] = {'p'};
-                        pi[i].get_command(command, 1);
+                    if (pi[i].get_type() == COUNTER_PLUGIN_TYPE) {
+                        unsigned char command[256] = {'\x00', COUNTER_PLUGIN_STOP};
+                        pi[i].get_command(command, 2);
                     }
                 }
+
                 break;
             }
         }

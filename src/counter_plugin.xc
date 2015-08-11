@@ -6,7 +6,7 @@
 
 [[combinable]]
 void counter_plugin(server interface plugin_interface pi, client interface counter_service_interface csi[NO_OF_COUNTER_SERVICES]) {
-    unsigned char type = 'c';
+    unsigned char type = COUNTER_PLUGIN_TYPE;
 
     while(1) {
         select {
@@ -18,11 +18,11 @@ void counter_plugin(server interface plugin_interface pi, client interface count
             case pi.get_command(unsigned char command[n], unsigned n): {
                 unsigned int i = command[0];
                 switch (command[1]) {
-                    case 's': {
+                    case COUNTER_PLUGIN_START: {
                         csi[i].start();
                         break;
                     }
-                    case 'p': {
+                    case COUNTER_PLUGIN_STOP: {
                         csi[i].stop();
                         break;
                     }
@@ -37,7 +37,7 @@ void counter_plugin(server interface plugin_interface pi, client interface count
             case csi[int i].event(): {
                 switch(csi[i].get_event()) {
                     case E_PROBE_INT_VALUE: {
-                        xscope_int(0, csi[i].get_int_probe_value());
+                        printintln(csi[i].get_int_probe_value());
                         break;
                     }
                     default: {
