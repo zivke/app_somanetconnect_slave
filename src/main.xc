@@ -22,7 +22,7 @@ int main(void) {
 
         on tile[COM_TILE]:
         {
-//            [[combine]]
+            [[combine]]
             par
             {
                 somanet_connect_server(c_host_data, pi);

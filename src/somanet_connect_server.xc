@@ -1,38 +1,35 @@
 #include "somanet_connect_server.h"
 #include "plugin_interface.h"
 #include <print.h>
-#include <xscope.h>
 #include <string.h>
+#include <stdint.h>
+#include <xs1.h>
 
 [[combinable]]
 void somanet_connect_server(chanend c_host_data, client interface plugin_interface pi[NO_OF_PLUGINS]) {
+    const uint32_t period = 1000 * 250000;
 
-    // The maximum read size is 256 bytes
-    unsigned int buffer[256 / 4];
-    unsigned char *char_ptr = (unsigned char*) buffer;
+    timer t1, t2;
+    uint32_t time1, time2;
 
-    xscope_connect_data_from_host(c_host_data);
-
-    int bytes_read;
-
+    t1 :> time1;
+    t2 :> time2;
     while (1) {
         select {
-            case xscope_data_from_host(c_host_data, (unsigned char *)buffer, bytes_read): {
-                if (bytes_read < 1) {
-                    printstrln("ERROR: Received byte array length invalid\n");
-                    break;
+            case t1 when timerafter(time1 + 5 * period) :> void: {
+                for (int i = 0; i < NO_OF_PLUGINS; i++) {
+                    if (pi[i].get_type() == 'c') {
+                        unsigned char command[256] = {'s'};
+                        pi[i].get_command(command, 1);
+                    }
                 }
-
-                unsafe {
-                    const unsigned char * unsafe ptr = &char_ptr[0];
-                    unsigned char type = *ptr;
-
-                    for (int i = 0; i < NO_OF_PLUGINS; i++) {
-                        if (pi[i].get_type() == type) {
-                            unsigned char command[256];
-                            memcpy(command, ++ptr, (bytes_read - 1)*sizeof(unsigned char));
-                            pi[i].get_command(command, bytes_read - 1);
-                        }
+                break;
+            }
+            case t2 when timerafter(time2 + 10 * period) :> void: {
+                for (int i = 0; i < NO_OF_PLUGINS; i++) {
+                    if (pi[i].get_type() == 'c') {
+                        unsigned char command[256] = {'p'};
+                        pi[i].get_command(command, 1);
                     }
                 }
                 break;
