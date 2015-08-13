@@ -1,7 +1,6 @@
 #include "plugin_interface.h"
 #include "counter_plugin.h"
 #include <print.h>
-#include <xscope.h>
 #include <system_config.h>
 
 [[combinable]]
