@@ -31,8 +31,8 @@ void counter_service(server interface counter_service_interface csi) {
                 break;
             }
 
-            case csi.get_event() -> csi_event_type_t t: {
-                t = event_type;
+            case csi.get_event() -> csi_event_type_t type_value: {
+                type_value = event_type;
                 break;
             }
 
