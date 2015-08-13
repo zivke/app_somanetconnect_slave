@@ -2,10 +2,20 @@
 #include "counter_plugin.h"
 #include <print.h>
 #include <system_config.h>
+#include <stdint.h>
+#include <xs1.h>
 
 [[combinable]]
 void counter_plugin(server interface plugin_interface pi, client interface counter_service_interface csi[NO_OF_COUNTER_SERVICES]) {
     unsigned char type = COUNTER_PLUGIN_TYPE;
+
+    timer t;
+    uint64_t time;
+    const uint64_t period = 250000; // 250000 timer ticks = 1ms (ReferenceFrequency="250MHz")
+
+    int running = 0;
+
+    t :> time;
 
     while(1) {
         select {
@@ -18,10 +28,12 @@ void counter_plugin(server interface plugin_interface pi, client interface count
                 unsigned int i = command[0];
                 switch (command[1]) {
                     case COUNTER_PLUGIN_START: {
+                        running = 1;
                         csi[i].start();
                         break;
                     }
                     case COUNTER_PLUGIN_STOP: {
+                        running = 0;
                         csi[i].stop();
                         break;
                     }
@@ -33,17 +45,14 @@ void counter_plugin(server interface plugin_interface pi, client interface count
                 break;
             }
 
-            case csi[int i].event(): {
-                switch(csi[i].get_event()) {
-                    case E_PROBE_INT_VALUE: {
-                        printintln(csi[i].get_int_probe_value());
-                        break;
-                    }
-                    default: {
-                        printstrln("Unknown event!");
-                        break;
+            case t when timerafter(time) :> void: {
+                if(running) {
+                    for (int i = 0; i < NO_OF_COUNTER_SERVICES; i++) {
+                        printintln(csi[i].get_probe_0_int_value());
+                        printintln(csi[i].get_probe_1_int_value());
                     }
                 }
+                time += period;
                 break;
             }
         }

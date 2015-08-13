@@ -1,16 +1,9 @@
 #pragma once
 
-typedef enum csi_event_type_t
-{
-  E_PROBE_INT_VALUE
-} csi_event_type_t;
-
 interface counter_service_interface {
-    [[notification]] slave void event();
+    int get_probe_0_int_value();
 
-    [[clears_notification]] csi_event_type_t get_event();
-
-    int get_int_probe_value();
+    int get_probe_1_int_value();
 
     void start();
 

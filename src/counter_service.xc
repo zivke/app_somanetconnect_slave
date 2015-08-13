@@ -1,54 +1,61 @@
 #include "counter_service.h"
 #include <timer.h>
 #include <print.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <xs1.h>
 
 void counter_service(server interface counter_service_interface csi) {
     timer t;
-    uint64_t time, start_time;
+    uint64_t time;
     const uint32_t period = 1000 * 250000; // 250000 timer ticks = 1ms (ReferenceFrequency="250MHz")
 
-    int run = 0;
+    int running = 0;
 
-    csi_event_type_t event_type;
-    int probe_int_value;
+    int value = 0;
+    int max_value = 1000;
+
+    int probe_0_int_value = 0;
+    int probe_1_int_value = 0;
 
     t :> time;
-    t :> start_time;
+    srand(time);
     while(1) {
         select {
             case csi.start(): {
-                run = 1;
+                running = 1;
                 printf("Counter service started successfully\n");
                 break;
             }
 
             case csi.stop(): {
-                run = 0;
+                running = 0;
                 printf("Counter service stopped successfully\n");
                 break;
             }
 
-            case csi.get_event() -> csi_event_type_t type_value: {
-                type_value = event_type;
+            case csi.get_probe_0_int_value() -> int probe_0_value: {
+                probe_0_value = probe_0_int_value;
                 break;
             }
 
-            case csi.get_int_probe_value() -> int x: {
-                x = probe_int_value;
+            case csi.get_probe_1_int_value() -> int probe_1_value: {
+                probe_1_value = probe_1_int_value;
                 break;
             }
 
             case t when timerafter(time) :> void: {
-                if (run) {
-                    int current_time = (time - start_time)/period;
+                if (running) {
+                    probe_0_int_value = value;
+                    probe_1_int_value = 1000 - value;
 
-                    // Event
-                    event_type = E_PROBE_INT_VALUE;
-                    probe_int_value = current_time;
-                    csi.event();
+                    value++;
+
+                    if (value == max_value) {
+                        value = rand() % 300;
+                        max_value = rand() % 300 + 500;
+                    }
                 }
                 time += period;
 
